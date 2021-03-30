@@ -1,0 +1,33 @@
+specVersion: 0.0.2
+description: GEX MVP
+repository: https://github.com/flex-dapps/gex-subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: GEX
+    network: goerli
+    source:
+      address: 0xf54EDc8E9A5daf6aEb76E21A2Af550BE24F6Df58
+      abi: GEX
+      startBlock: 4419847
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/gex.ts
+      entities:
+        - OwnerToken
+        - LicenseToken
+      abis:
+        - name: GEX
+          file: ./build/GEX.json
+        - name: ERC1155Burnable
+          file: ./build/ERC1155Burnable.json
+      eventHandlers:
+        - event: Mint(indexed address,uint256,uint256,uint256,bool,string)
+          handler: handleMint
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch

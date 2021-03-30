@@ -1,0 +1,28 @@
+type OwnerToken @entity {
+    id: ID!                                                             # Token ID (odd number)
+    isGame: Boolean!                                                    # Whether the token is for a game or an asset
+    licenseToken: LicenseToken! @derivedFrom(field: "ownerToken")       # Associated license token
+    ipfsHash: String!                                                   # IPFS hash for token data
+    holder: Holder!                                                     # ETH address holding the token
+}
+
+type LicenseToken @entity {
+    id: ID!                                                             # Token ID (even number)
+    ownerToken: OwnerToken!                                             # Associated owner token
+    price: BigDecimal!                                                  # Price in ETH of license
+    remainingLicenses: BigInt!                                          # Number of licenses remaining for purchase
+    holders: [HolderLicenseToken!]! @derivedFrom(field: "licenseToken") # ETH addresses that hold the token
+}
+
+type Holder @entity {
+    id: ID!                                                             # ETH address of token holder
+    ownerTokens: [OwnerToken!]! @derivedFrom(field: "holder")           # Owner tokens held by the address
+    licenseTokens: [HolderLicenseToken!]! @derivedFrom(field: "holder") # License tokens held by the address
+}
+
+# Join table for Holder-LicenseToken many-to-many relationship
+type HolderLicenseToken @entity {
+    id: ID!                                                             # Set to `${holder.id}-${licenseToken.id}`
+    holder: Holder!
+    licenseToken: LicenseToken!
+}

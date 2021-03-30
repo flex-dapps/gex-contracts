@@ -1,0 +1,8 @@
+.DS_STORE
+.vscode/
+cache/
+build/
+node_modules/
+src/types/
+typechain/
+yarn-error.log
