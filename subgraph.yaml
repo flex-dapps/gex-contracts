@@ -8,7 +8,7 @@ dataSources:
     name: GEX
     network: goerli
     source:
-      address: 0xf54EDc8E9A5daf6aEb76E21A2Af550BE24F6Df58
+      address: "0xf54EDc8E9A5daf6aEb76E21A2Af550BE24F6Df58"
       abi: GEX
       startBlock: 4419847
     mapping:

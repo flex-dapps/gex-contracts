@@ -44,8 +44,14 @@ function updateHolder(
         // handleMint() handles owner token minting
         if (isZeroAddress(oldOwnerAddress)) return
         let ownerToken = OwnerToken.load(tokenId.toString())
-        ownerToken.holder = newOwnerAddress.toHexString()
-        ownerToken.save()
+        if (ownerToken != null) {
+            if (isZeroAddress(newOwnerAddress)) {
+            store.remove('OwnerToken', tokenId.toString())
+            } else {
+                ownerToken.holder = newOwnerAddress.toHexString()
+                ownerToken.save()
+            }
+        }
     } else {
         // license token case
         // remove from old owner if exists
